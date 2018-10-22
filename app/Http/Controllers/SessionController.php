@@ -24,16 +24,13 @@ class SessionController extends Controller
             'captcha'=>'required|captcha',
         ]);
 
-        //验证账号是否过审核
-        //$user = DB::select('select status from users where name= ?', [$request->name]);
-        //dd($user);
-        //if($status != 1){
-        //   return back()->with('danger','账号未过审核，请等待审核')->withInput();
-        //}
-
         //验证 账号密码是否正确
         if(Auth::attempt(['name'=>$request->name,'password'=>$request->password],$request->has('remember'))){
             //认证通过 登录成功 提示登录成功 跳转到上一次访问的页面
+            if (Auth::user()->status!=1) {
+                return back()->with('danger', '账号未过审，请等待审核')->withInput();
+            }
+
             return redirect()->intended(route('user.index'))->with('success','登录成功');
 
         }else{

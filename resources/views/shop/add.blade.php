@@ -1,10 +1,25 @@
 @extends('layout.default')
 
 @section('contents')
-    <h1>添加商家信息</h1>
+    <h1>添加商家账户</h1>
     @include('layout._errors')
     @include('layout._notice')
     <form method="post" action="{{route('shop.save')}}" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>用户名</label>
+            <input type="text" name="name" class="form-control" value="{{ old('name') }}">
+        </div>
+        <div class="form-group">
+            <label>密码</label>
+            <input type="password" name="password" class="form-control" value="{{ old('password') }}">
+        </div>
+        <div class="form-group">
+            <label>邮箱</label>
+            <input type="email" name="email" class="form-control" value="{{ old('email') }}">
+        </div>
+
+        <h1>添加商家信息</h1>
+
         <div class="form-group">
             <label>所属店铺分类</label>
             <select name="shop_category_id" class="form-control">
@@ -115,6 +130,7 @@
                 <input type="radio" name="status" value="0" readonly="readonly" checked="checked"> 默认待审核，1-2工作日审核通过后可正常登录
             </label>
         </div>
+
         <div class="form-group">
             <label>验证码</label>
             <input id="captcha" class="form-control" name="captcha" >

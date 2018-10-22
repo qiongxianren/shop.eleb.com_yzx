@@ -39,7 +39,7 @@
             <ul class="nav navbar-nav navbar-right">
                 @guest
                 <li><a href="{{route('login')}}">登录</a></li>
-                <li><a href="#">注册</a></li>
+                <li><a href="{{route('shop.add')}}">注册</a></li>
                 @endguest
                 @auth
                 <li class="dropdown">

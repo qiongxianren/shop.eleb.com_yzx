@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\ShopCategory;
 use App\Models\Shop;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ShopController extends Controller
 {
@@ -20,6 +22,10 @@ class ShopController extends Controller
     {
         //数据验证
         $this->validate($request, [
+            'name'=>'required|min:2|max:20',
+            'password'=>'required|min:6',
+            'email'=>'required',
+
             'shop_category_id'=>'required',//分类店铺ID
             'shop_name'=>'required|min:2|max:20',//名称
             'shop_img'=>'required|file',//店铺图片
@@ -39,6 +45,13 @@ class ShopController extends Controller
 
         ],
             [//自定义错误提示
+                'name.required'=>'用户名不能为空',
+                'name.min'=>'用户名不能少于2位',
+                'name.max'=>'用户名不能多于20位',
+                'password.required'=>'密码不能为空',
+                'password.min:6'=>'密码不能少于6位',
+                'email.required'=>'邮箱不能为空',
+
                 'shop_category_id.required'=>'分类不能为空',
                 'shop_name.required'=>'店铺名称不能为空',
                 'shop_name.min'=>'分类标题不能少于2位',
@@ -72,23 +85,38 @@ class ShopController extends Controller
             $request->discount = '无';
         }
 
-        Shop::create([
-            'shop_category_id'=>$request->shop_category_id,
-            'shop_name'=>$request->shop_name,
-            'shop_img'=>$path,
-            'shop_rating'=>$request->shop_rating,
-            'brand'=>$request->brand,
-            'on_time'=>$request->on_time,
-            'fengniao'=>$request->fengniao,
-            'bao'=>$request->bao,
-            'piao'=>$request->piao,
-            'zhun'=>$request->zhun,
-            'start_send'=>$request->start_send,
-            'send_cost'=>$request->send_cost,
-            'notice'=>$request->notice,
-            'discount'=>$request->discount,
-            'status'=>$request->status,
-        ]);
+        DB::beginTransaction();
+        try{
+            $shop = Shop::create([
+                'shop_category_id'=>$request->shop_category_id,
+                'shop_name'=>$request->shop_name,
+                'shop_img'=>$path,
+                'shop_rating'=>$request->shop_rating,
+                'brand'=>$request->brand,
+                'on_time'=>$request->on_time,
+                'fengniao'=>$request->fengniao,
+                'bao'=>$request->bao,
+                'piao'=>$request->piao,
+                'zhun'=>$request->zhun,
+                'start_send'=>$request->start_send,
+                'send_cost'=>$request->send_cost,
+                'notice'=>$request->notice,
+                'discount'=>$request->discount,
+                'status'=>$request->status,
+            ]);
+            User::create([
+                'name'=>$request->name,
+                'email'=>$request->email,
+                'password'=>bcrypt($request->password),
+                'status'=>$request->status,
+                'shop_id'=>$shop->id,
+                'remember_token'=>$request->_token,
+            ]);
+
+            DB::commit();
+        }catch (\Exception $e){
+            DB::rollBack();
+        }
 
         //添加成功的提示信息
         session()->flash('success','商家信息添加成功');

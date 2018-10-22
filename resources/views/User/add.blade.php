@@ -1,7 +1,7 @@
 @extends('layout.default')
 
 @section('contents')
-    <h1>添加用户</h1>
+    <h1>添加商家账户</h1>
     @include('layout._errors')
     @include('layout._notice')
     <form method="post" action="{{ route('user.save') }}" enctype="multipart/form-data">
@@ -26,14 +26,7 @@
                 <input type="radio" name="status" value="0"> 禁用
             </label>
         </div>
-        <div class="form-group">
-            <label>所属商家</label>
-            <select name="shop_id" class="form-control">
-                @foreach($shops as $shop)
-                    <option value="{{$shop->id}}">{{$shop->shop_name}}</option>
-                @endforeach
-            </select>
-        </div>
+
         <div class="form-group">
             <label>验证码</label>
             <input id="captcha" class="form-control" name="captcha" >

@@ -35,4 +35,4 @@ Route::post('login','SessionController@store')->name('login');
 Route::get('logout','SessionController@destroy')->name('logout');
 //商户密码修改
 Route::get('/user/editpwd/{user}','UserController@editpwd')->name('user.editpwd');
-Route::post('/user/updatepwd/{user}','UserController@updatepwd')->name('user.updatepwd');
+Route::post('/user/updatepwd','UserController@updatepwd')->name('user.updatepwd');

@@ -77,7 +77,7 @@ class UserController extends Controller
         return view('user.editpwd',compact('user'));
     }
 
-    public function updatepwd(User $user,Request $request)
+    public function updatepwd(Request $request)
     {
         $this->validate($request, [
             'oldpassword'=>'required',
@@ -90,16 +90,18 @@ class UserController extends Controller
                 'repassword.required'=>'请确认重复密码',
             ]);
 
-        if($request->newpassword == $request->repassword){
+        if ($request->newpassword != $request->repassword){
+            return back()->with('danger','请验证重复密码一致')->withInput();
+        }
+
+        if(!Hash::check($request->oldpassword, Auth::user()->getAuthPassword())){
+            return back()->with('danger','原密码错误，请重新填写')->withInput();
+        }else{
             $request->user()->fill([
                 'password' => Hash::make($request->newpassword)
             ])->save();
 
-            session()->flash('success','密码修改成功');
-        }else{
-            session()->flash('danger','密码修改失败，请验证原密码或确认重复密码后重新提交');
+            return redirect()->intended(route('user.index'))->with('success','密码修改成功');
         }
-
-        return redirect()->route('user.editpwd');
     }
 }
