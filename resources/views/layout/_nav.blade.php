@@ -16,15 +16,15 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
                 @auth
-                <li><a href="#">欢迎</a></li>
+                <li><a href="{{route('activity.list')}}">活动列表</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">我的产品 <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">我的资产 <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">商家功能1</a></li>
-                        <li><a href="#">商家功能2</a></li>
+                        <li><a href="{{ route('menu_category.add') }}">添加菜品分类</a></li>
+                        <li><a href="{{ route('menu_category.list') }}">菜品分类管理</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#">商家功能3</a></li>
-                        <li><a href="#">商家功能4</a></li>
+                        <li><a href="{{ route('menu.add') }}">添加菜品</a></li>
+                        <li><a href="{{ route('menu.list') }}">菜品管理</a></li>
                         <li role="separator" class="divider"></li>
                     </ul>
                 </li>
