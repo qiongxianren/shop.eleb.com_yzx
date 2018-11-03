@@ -17,6 +17,7 @@
                 <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
                 @auth
                 <li><a href="{{route('activity.list')}}">活动列表</a></li>
+                <li><a href="{{route('order.list')}}">订单列表</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">我的资产 <span class="caret"></span></a>
                     <ul class="dropdown-menu">
